@@ -3,6 +3,7 @@ import { catchAsycnErrors } from "../Middlewares/catchAsyncError.js";
 import ErrorHandler from "../Middlewares/error.js";
 import { sendMail } from "../utils/sendMail.js";
 
+
 // Send a message and email the user
 export const sendMessage = catchAsycnErrors(async (req, res, next) => {
   const { firstName, lastName, email, phone, message } = req.body;

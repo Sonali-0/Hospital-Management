@@ -16,7 +16,7 @@ export const sendMessage = catchAsycnErrors(async (req, res, next) => {
 
   await sendMail({
     to: email,
-    subject: "Message Received - HBTU Contact Form",
+    subject: "Message Received - Jeevan Chaya Hospital Contact Form",
     text: `Dear ${firstName} ${lastName},
 
 Thank you for contacting us. We have received your message and will get back to you soon.
@@ -25,7 +25,7 @@ Here is a copy of your message:
 "${message}"
 
 Best regards,
-Team HBTU`,
+Team Jeevan Chaya Hospital`,
   });
 
   res.status(200).json({

@@ -25,7 +25,7 @@ Here is a copy of your message:
 "${message}"
 
 Best regards,
-Team Jeevan Chaya Hospital`,
+Team Jeevan Chaya Medical Center`,
   });
 
   res.status(200).json({

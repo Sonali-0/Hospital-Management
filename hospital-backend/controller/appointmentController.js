@@ -1,7 +1,8 @@
-import { catchAsycnErrors } from "../Middlewares/catchAsyncError.js"; // Corrected typo
+import { catchAsycnErrors } from "../Middlewares/catchAsyncError.js";
 import ErrorHandler from "../Middlewares/error.js";
 import { Appointment } from "../model/appointmentSchema.js";
 import { User } from "../model/UserSchema.js";
+import { sendMail } from "../utils/sendMail.js"; // ✅ Import sendMail
 
 export const postAppointment = catchAsycnErrors(async (req, res, next) => {
   const {
@@ -77,55 +78,24 @@ export const postAppointment = catchAsycnErrors(async (req, res, next) => {
     patientId,
   });
 
-  res.status(200).json({
-    success: true,
-   // appointment,
-    message: "Appointment Sent!",
+  // ✅ Send confirmation email to the user
+  await sendMail({
+    to: email,
+    subject: "Appointment Confirmation - Jeevan Chaya Medical Center",
+    text: `Dear ${firstName} ${lastName},
+
+Thank you for booking your appointment with us.
+
+We have successfully received your appointment request for the ${department} department with Dr. ${doctor_firstName} ${doctor_lastName} on ${appointment_date}.
+
+We will contact you shortly to confirm the exact appointment time once the doctor is available.
+
+Best regards,
+Team Jeevan Chaya Medical Center`,
   });
-});
-
-export const getAllAppointments = catchAsycnErrors(async (req, res, next) => {
-  const appointments = await Appointment.find();
-  res.status(200).json({
-    success: true,
-    appointments,
-  });
-});
-
-export const updateAppointmentStatus = catchAsycnErrors(
-  async (req, res, next) => {
-    const { id } = req.params;
-
-    let appointment = await Appointment.findById(id);
-    if (!appointment) {
-      return next(new ErrorHandler("Appointment not found!", 404));
-    }
-
-    appointment = await Appointment.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-      useFindAndModify: false,
-    });
-
-    res.status(200).json({
-      success: true,
-      message: "Appointment Status Updated!",
-    });
-  }
-);
-
-export const deleteAppointment = catchAsycnErrors(async (req, res, next) => {
-  const { id } = req.params;rs
-
-  const appointment = await Appointment.findById(id);
-  if (!appointment) {
-    return next(new ErrorHandler("Appointment Not Found!", 404));
-  }
-
-  await appointment.deleteOne();
 
   res.status(200).json({
     success: true,
-    message: "Appointment Deleted!",
+    message: "Appointment Sent! A confirmation email has been sent.",
   });
 });

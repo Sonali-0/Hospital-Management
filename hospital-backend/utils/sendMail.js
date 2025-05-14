@@ -24,4 +24,4 @@ export const sendMail = async ({ to, subject, text }) => {
   await transporter.sendMail(mailOptions);
 };
 
-console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
+

@@ -1,31 +1,44 @@
-import {Message} from "../model/massageSchema.js"
+import { Message } from "../model/massageSchema.js";
 import { catchAsycnErrors } from "../Middlewares/catchAsyncError.js";
-import  ErrorHandler from "../Middlewares/error.js";
+import ErrorHandler from "../Middlewares/error.js";
+import { sendMail } from "../utils/sendMail.js";
 
-export const sendMessage = catchAsycnErrors(async (req, res, next)=>{
-    const {firstName, lastName, email, phone, message} = req.body;
+// Send a message and email the user
+export const sendMessage = catchAsycnErrors(async (req, res, next) => {
+  const { firstName, lastName, email, phone, message } = req.body;
 
-    if(!firstName || !lastName || !email || !phone || !message){
-        return  next(new ErrorHandler("Plese fill Full from" , 400));
-        //   res.status(400).json({
-        //    success : false,
-        //    message : "Please Fill Full Form" ,
-       // });
-    }
-       await Message.create({firstName, lastName, email, phone, message})
-       res.status(200).json({
-         success : true,
-         message: "Message Send Successfully",
-       });
-})
+  if (!firstName || !lastName || !email || !phone || !message) {
+    return next(new ErrorHandler("Please fill full form", 400));
+  }
 
-export const getMessage = catchAsycnErrors(async (req, res, next) => {
-  const messages = await Message.find(); // Fetch all messages
+  await Message.create({ firstName, lastName, email, phone, message });
+
+  await sendMail({
+    to: email,
+    subject: "Message Received - HBTU Contact Form",
+    text: `Dear ${firstName} ${lastName},
+
+Thank you for contacting us. We have received your message and will get back to you soon.
+
+Here is a copy of your message:
+"${message}"
+
+Best regards,
+Team HBTU`,
+  });
 
   res.status(200).json({
     success: true,
-    messages, // Return all messages
+    message: "Message sent successfully. A confirmation email has been sent to you.",
   });
 });
 
+// Get all messages
+export const getMessage = catchAsycnErrors(async (req, res, next) => {
+  const messages = await Message.find();
 
+  res.status(200).json({
+    success: true,
+    messages,
+  });
+});

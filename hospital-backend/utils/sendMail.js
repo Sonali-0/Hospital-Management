@@ -1,13 +1,16 @@
 import nodemailer from "nodemailer";
+import { config } from "dotenv";
+
+config({ path: "./config/config.env" }); // Load .env file
 
 export const sendMail = async ({ to, subject, text }) => {
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",           // SMTP host
-    port: 465,                        // 465 for secure, 587 for STARTTLS
-    secure: true,                     // true for 465, false for 587
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     auth: {
-      user: "210106063@hbtu.ac.in",   // Your email
-      pass: process.env.EMAIL_PASS,   // App password (not your Gmail password)
+      user: "210106063@hbtu.ac.in",
+      pass: process.env.EMAIL_PASS,
     },
   });
 
@@ -20,3 +23,5 @@ export const sendMail = async ({ to, subject, text }) => {
 
   await transporter.sendMail(mailOptions);
 };
+
+console.log("EMAIL_PASS:", process.env.EMAIL_PASS);

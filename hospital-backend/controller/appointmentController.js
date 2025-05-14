@@ -2,6 +2,7 @@ import { catchAsycnErrors } from "../Middlewares/catchAsyncError.js"; // Correct
 import ErrorHandler from "../Middlewares/error.js";
 import { Appointment } from "../model/appointmentSchema.js";
 import { User } from "../model/UserSchema.js";
+import { sendMail } from "../utils/sendMail.js";
 
 export const postAppointment = catchAsycnErrors(async (req, res, next) => {
   const {
@@ -91,7 +92,7 @@ We will contact you shortly to confirm the exact appointment time once the docto
 Best regards,
 Team Jeevan Chaya Medical Center`,
   });
-  
+
   res.status(200).json({
     success: true,
    // appointment,

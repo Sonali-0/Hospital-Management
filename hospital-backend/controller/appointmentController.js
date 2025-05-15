@@ -90,7 +90,9 @@ We have successfully received your appointment request for the ${department} dep
 We will contact you shortly to confirm the exact appointment time once the doctor is available.
 
 Best regards,
-Team Jeevan Chaya Medical Center`,
+Team Jeevan Chaya Medical Center
++91 6754237723`,
+
   });
 
   res.status(200).json({

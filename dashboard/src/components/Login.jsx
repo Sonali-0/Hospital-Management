@@ -47,7 +47,10 @@ const Login = () => {
       <section className="container form-component">
         <img src="/logo.png" alt="logo" className="logo" />
         <h1 className="form-title">WELCOME TO JeevanChaya- Hospital</h1>
-        <p>Only Admins Are Allowed To Access These Resources!</p>
+        <p>Only admins are allowed to access these resources. However, for testing purposes, I am providing the following credentials:
+Email: 210106019@hbtu.ac.in
+Password: 12345678
+        </p>
         <form onSubmit={handleLogin}>
           <input
             type="text"
